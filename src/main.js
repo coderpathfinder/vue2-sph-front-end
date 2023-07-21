@@ -1,24 +1,23 @@
 import Vue from 'vue'
 
-import Cookies from 'js-cookie'
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
-import 'normalize.css/normalize.css' // a modern alternative to CSS resets
-
-import Element from 'element-ui'
-import './styles/element-variables.scss'
-import enLang from 'element-ui/lib/locale/lang/en'// 如果使用中文语言包请默认支持，无需额外引入，请删除该依赖
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
 import App from './App'
 import store from './store'
 import router from './router'
+import product from '@/api/product'
+import acl from '@/api/acl'
+
+import CategorySelect from '@/components/CategorySelect'
 
 import './icons' // icon
 import './permission' // permission control
-import './utils/error-log' // error log
-
-import * as filters from './filters' // global filters
 
 /**
  * If you don't want to use mock-server
@@ -28,22 +27,27 @@ import * as filters from './filters' // global filters
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
-Vue.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
-  locale: enLang // 如果使用中文，无需设置，请删除
-})
+import HintButton from '@/components/HintButton';
+Vue.component(HintButton.name,HintButton);
 
-// register global utility filters
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+Vue.use(ElementUI, {
+  locale: locale // 如果使用中文，无需设置，请删除
 })
 
 Vue.config.productionTip = false
+
+//挂载商品模块API模块
+Vue.prototype.$productApi = product
+
+//挂载权限模块API模块
+Vue.prototype.$aclApi = acl
+
+Vue.component(CategorySelect.name, CategorySelect)
 
 new Vue({
   el: '#app',
