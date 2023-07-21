@@ -2,32 +2,44 @@
   <div>
     <!-- 表格 -->
     <el-table style="width: 100%" border :data="skuList">
-      <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
-      <el-table-column prop="skuName" label="名称" width="width"></el-table-column>
-      <el-table-column prop="skuDesc" label="描述" width="width"></el-table-column>
+      <el-table-column type="index" label="序号" width="80" align="center" />
+      <el-table-column prop="skuName" label="名称" width="width" />
+      <el-table-column prop="skuDesc" label="描述" width="width" />
       <el-table-column label="默认图片" width="110">
         <template slot-scope="{row}">
-          <img :src="row.skuDefaultImg" alt="" style="width: 80px; height: 80px" />
+          <img :src="row.skuDefaultImg" alt="" style="width: 80px; height: 80px">
         </template>
       </el-table-column>
-      <el-table-column prop="weight" label="重量" width="80"></el-table-column>
-      <el-table-column prop="price" label="价格" width="80"></el-table-column>
+      <el-table-column prop="weight" label="重量" width="80" />
+      <el-table-column prop="price" label="价格" width="80" />
       <el-table-column prop="prop" label="操作" width="width">
         <template slot-scope="{row}">
-          <el-button type="success" icon="el-icon-sort-down" size="mini" v-if="row.isSale == 0"
-            @click="sale(row)"></el-button>
-          <el-button type="success" icon="el-icon-sort-up" size="mini" v-else @click="cancel(row)"></el-button>
-          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit"></el-button>
-          <el-button type="info" icon="el-icon-info" size="mini" @click="getSkuInfo(row)"></el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+          <el-button
+            v-if="row.isSale == 0"
+            type="success"
+            icon="el-icon-sort-down"
+            size="mini"
+            @click="sale(row)"
+          />
+          <el-button v-else type="success" icon="el-icon-sort-up" size="mini" @click="cancel(row)" />
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit" />
+          <el-button type="info" icon="el-icon-info" size="mini" @click="getSkuInfo(row)" />
+          <el-button type="danger" icon="el-icon-delete" size="mini" />
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页          -->
-    <el-pagination @size-change="sizeChange" @current-change="getDataPage" style="text-align: center" :pager-count="5"
-      :current-page="page" :page-sizes="[3, 5, 10]" :page-size="limit" layout="prev, pager, next, jumper,->,sizes,total"
-      :total="total">
-    </el-pagination>
+    <el-pagination
+      style="text-align: center"
+      :pager-count="5"
+      :current-page="page"
+      :page-sizes="[3, 5, 10]"
+      :page-size="limit"
+      @size-change="sizeChange"
+      layout="prev, pager, next, jumper,->,sizes,total"
+      @current-change="getDataPage"
+      :total="total"
+    />
     <!-- 抽屉效果 -->
     <el-drawer :visible.sync="show" :show-close="false" size="50%">
       <el-row>
@@ -46,7 +58,7 @@
         <el-col :span="5">平台属性</el-col>
         <el-col :span="16">
           <template>
-            <el-tag type="success" v-for="attr in skuInfo.skuAttrValueList" :key="attr.id" style="margin-right:10px">{{
+            <el-tag v-for="attr in skuInfo.skuAttrValueList" :key="attr.id" type="success" style="margin-right:10px">{{
               attr.attrId }}-{{ attr.valueId }}</el-tag>
           </template>
         </el-col>
@@ -75,7 +87,7 @@ export default {
       total: 0,
       skuList: [],
       skuInfo: {},
-      show: false,
+      show: false
     }
   },
   mounted() {
@@ -83,8 +95,8 @@ export default {
   },
   methods: {
     async getSkuList() {
-      let { page, limit } = this
-      let result = await this.$productApi.sku.reqSkuListPage(page, limit)
+      const { page, limit } = this
+      const result = await this.$productApi.sku.reqSkuListPage(page, limit)
       if (result.code == 200) {
         this.skuList = result.data.records
         this.total = result.data.total
@@ -103,36 +115,36 @@ export default {
       this.getSkuList()
     },
     async sale(row) {
-      let result = await this.$productApi.sku.reqOnSale(row.id);
+      const result = await this.$productApi.sku.reqOnSale(row.id)
       if (result.code == 200) {
-        this.$message({ type: "success", message: "上架成功" });
-        row.isSale = 1;
+        this.$message({ type: 'success', message: '上架成功' })
+        row.isSale = 1
       } else {
-        this.$message.error(result.message);
+        this.$message.error(result.message)
       }
     },
     async cancel(row) {
-      let result = await this.$productApi.sku.reqCancelSale(row.id);
+      const result = await this.$productApi.sku.reqCancelSale(row.id)
       if (result.code == 200) {
-        this.$message({ type: "success", message: "下架成功" });
-        row.isSale = 0;
+        this.$message({ type: 'success', message: '下架成功' })
+        row.isSale = 0
       } else {
-        this.$message.error(result.message);
+        this.$message.error(result.message)
       }
     },
     async getSkuInfo(row) {
-      let result = await this.$productApi.sku.reqSkuInfo(row.id);
+      const result = await this.$productApi.sku.reqSkuInfo(row.id)
       if (result.code == 200) {
         this.skuInfo = result.data
         this.show = true
       } else {
-        this.$message.error(result.message);
+        this.$message.error(result.message)
       }
     },
     edit() {
-      this.$message("正在开发中");
-    },
-  },
+      this.$message('正在开发中')
+    }
+  }
 }
 </script>
 

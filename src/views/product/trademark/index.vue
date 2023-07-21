@@ -5,13 +5,18 @@
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
       <el-form ref="ruleForm" :model="form" style="width: 80%;" :rules="formRules">
         <el-form-item label="品牌名称" label-width="100px" prop="tmName">
-          <el-input v-model="form.tmName" autocomplete="off"></el-input>
+          <el-input v-model="form.tmName" autocomplete="off" />
         </el-form-item>
         <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
-          <el-upload class="avatar-uploader" action="/dev-api/admin/product/fileUpload" :show-file-list="false"
-            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <el-upload
+            class="avatar-uploader"
+            action="/dev-api/admin/product/fileUpload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
             <img v-if="form.logoUrl" :src="form.logoUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
             <div slot="tip" class="el-upload__tip">只能上传png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
@@ -23,8 +28,8 @@
     </el-dialog>
 
     <el-table :data="list" style="width: 100%;" border>
-      <el-table-column type="index" label="序号" width="80px" align="center"></el-table-column>
-      <el-table-column prop="tmName" label="品牌名称" width="width"></el-table-column>
+      <el-table-column type="index" label="序号" width="80px" align="center" />
+      <el-table-column prop="tmName" label="品牌名称" width="width" />
       <el-table-column prop="logoUrl" label="品牌LOGO" width="width">
         <template slot-scope="{row}">
           <img :src="row.logoUrl" style="width: 80px;">
@@ -32,23 +37,28 @@
       </el-table-column>
       <el-table-column label="操作" width="width">
         <template slot-scope="{row}">
-          <el-button type="warning" icon="el-icon-edit" @click="showUpdateDialog(row)" size="mini"></el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="remove(row)" size="mini"></el-button>
+          <el-button type="warning" icon="el-icon-edit" size="mini" @click="showUpdateDialog(row)" />
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="remove(row)" />
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination style="margin-top: 20px; text-align: center;" :current-page="page" :total="total" :pager-count="7"
-      :page-size="pageSize" :page-sizes="[5, 10, 20]" @current-change="getData" @size-change="sizeChange"
-      layout="prev, pager, next, jumper, ->, total, sizes"></el-pagination>
+    <el-pagination
+      style="margin-top: 20px; text-align: center;"
+      :current-page="page"
+      :total="total"
+      :pager-count="7"
+      :page-size="pageSize"
+      :page-sizes="[5, 10, 20]"
+      layout="prev, pager, next, jumper, ->, total, sizes"
+      @current-change="getData"
+      @size-change="sizeChange"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: 'TradeMark',
-  mounted() {
-    this.getData(this.page)
-  },
   data() {
     return {
       list: [],
@@ -60,24 +70,27 @@ export default {
       form: {
         id: 0,
         tmName: '',
-        logoUrl: '',
+        logoUrl: ''
       },
       formRules: {
-        //品牌名验证规则
+        // 品牌名验证规则
         tmName: [
           { required: true, message: '请输入品牌名称', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在2到10之间', trigger: 'change' },
+          { min: 2, max: 10, message: '长度在2到10之间', trigger: 'change' }
         ],
-        //品牌logo验证规则
+        // 品牌logo验证规则
         logoUrl: [
-          { required: true, message: '请选择品牌logo图片' },
-        ],
-      },
+          { required: true, message: '请选择品牌logo图片' }
+        ]
+      }
     }
+  },
+  mounted() {
+    this.getData(this.page)
   },
   methods: {
     async getData(page) {
-      let result = await this.$productApi.trademark.reqTradeMarkList(page, this.pageSize)
+      const result = await this.$productApi.trademark.reqTradeMarkList(page, this.pageSize)
       if (result.code == 200) {
         this.list = result.data.records
         this.total = result.data.total
@@ -94,27 +107,26 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(async () => {
-        let result = await this.$productApi.trademark.reqDeleteTrade(row.id)
-        if(result.code == 200) {
+      }).then(async() => {
+        const result = await this.$productApi.trademark.reqDeleteTrade(row.id)
+        if (result.code == 200) {
           this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
-        this.getData(this.page);
-        }else {
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.getData(this.page)
+        } else {
           this.$message({
-          type: 'danger',
-          message: '删除失败!'
-        });
+            type: 'danger',
+            message: '删除失败!'
+          })
         }
-        
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });
-      });
+        })
+      })
     },
     clearForm() {
       this.form.id = 0
@@ -140,29 +152,29 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       // this.form.logoUrl = URL.createObjectURL(file.raw);
-      this.form.logoUrl = res.data;
+      this.form.logoUrl = res.data
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/png';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 PNG 格式!');
+        this.$message.error('上传头像图片只能是 PNG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt2M
     },
     addOrUpdateTrade() {
-      this.$refs.ruleForm.validate(async (success) => {
+      this.$refs.ruleForm.validate(async(success) => {
         if (success) {
-          let data = { tmName: this.form.tmName, logoUrl: this.form.logoUrl }
+          const data = { tmName: this.form.tmName, logoUrl: this.form.logoUrl }
           if (this.form.id != 0) {
-            //修改
+            // 修改
             data.id = this.form.id
           }
-          let result = await this.$productApi.trademark.reqAddOrUpdateTrade(data)
+          const result = await this.$productApi.trademark.reqAddOrUpdateTrade(data)
           if (result.code == 200) {
             this.formClose()
             this.$message({ message: result.message, type: 'success' })
@@ -174,8 +186,8 @@ export default {
           return false
         }
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

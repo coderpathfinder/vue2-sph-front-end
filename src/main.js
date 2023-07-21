@@ -32,8 +32,8 @@ import './permission' // permission control
 //   mockXHR()
 // }
 
-import HintButton from '@/components/HintButton';
-Vue.component(HintButton.name,HintButton);
+import HintButton from '@/components/HintButton'
+Vue.component(HintButton.name, HintButton)
 
 Vue.use(ElementUI, {
   locale: locale // 如果使用中文，无需设置，请删除
@@ -41,10 +41,10 @@ Vue.use(ElementUI, {
 
 Vue.config.productionTip = false
 
-//挂载商品模块API模块
+// 挂载商品模块API模块
 Vue.prototype.$productApi = product
 
-//挂载权限模块API模块
+// 挂载权限模块API模块
 Vue.prototype.$aclApi = acl
 
 Vue.component(CategorySelect.name, CategorySelect)

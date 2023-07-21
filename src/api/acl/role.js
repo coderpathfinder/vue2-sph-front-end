@@ -1,13 +1,11 @@
-/* 
+/*
 角色管理相关的API请求函数
 */
 import request from '@/utils/request'
 
 const api_name = '/admin/acl/role'
 
-
-
-/* 
+/*
 获取角色分页列表(带搜索)
 */
 export const getPageList = (page, limit, searchObj) => {
@@ -18,7 +16,7 @@ export const getPageList = (page, limit, searchObj) => {
   })
 }
 
-/* 
+/*
 获取某个角色
 */
 export const constgetById = (id) => {
@@ -28,7 +26,7 @@ export const constgetById = (id) => {
   })
 }
 
-/* 
+/*
 保存一个新角色
 */
 export const constsave = (role) => {
@@ -39,7 +37,7 @@ export const constsave = (role) => {
   })
 }
 
-/* 
+/*
 更新一个角色
 */
 export const updateById = (role) => {
@@ -50,7 +48,7 @@ export const updateById = (role) => {
   })
 }
 
-/* 
+/*
 获取一个角色的所有权限列表
 */
 export const getAssign = (roleId) => {
@@ -60,7 +58,7 @@ export const getAssign = (roleId) => {
   })
 }
 
-/* 
+/*
 删除某个角色
 */
 export const removeById = (id) => {
@@ -70,7 +68,7 @@ export const removeById = (id) => {
   })
 }
 
-/* 
+/*
 批量删除多个角色
 */
 export const removeRoles = (ids) => {

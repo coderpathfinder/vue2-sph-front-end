@@ -13,10 +13,10 @@ import Observe from './observe'
 
 export default {
   name: 'Dashboard',
-  components: { Card, Sale, Observe},
+  components: { Card, Sale, Observe },
   created() {
-    this.$store.dispatch('getData');
-  },
+    this.$store.dispatch('getData')
+  }
 }
 </script>
 <style scoped>
